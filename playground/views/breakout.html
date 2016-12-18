@@ -79,7 +79,7 @@
   }
 
   function touchMoveHandler(e) {
-    var relativeX = e.clientX - canvas.offsetLeft;
+    var relativeX = touch.clientX - canvas.offsetLeft;
     if(relativeX > 0 + (paddleWidth / 2) && relativeX < canvas.width - (paddleWidth / 2)) {
       paddleX = relativeX - paddleWidth / 2;
     }
