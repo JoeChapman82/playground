@@ -81,7 +81,7 @@ function mouseMoveHandler(e) {
 
 function touchMoveHandler(e) {
   var touch = e.touches[0];
-  var relativeX = touch.clientX - canvas.offsetLeft;
+  var relativeX = touch.clientX;
   if(relativeX > 0 + (paddleWidth / 2) && relativeX < canvas.width - (paddleWidth / 2)) {
     paddleX = relativeX - paddleWidth / 2;
   }
@@ -272,4 +272,4 @@ function draw() {
     y += dy;
 }
 
-var drawLoop = setInterval(draw, 10); //sets repeat on function draw with interval 10 milliseconds
+var drawLoop = setInterval(draw,10); //sets repeat on function draw with interval 10 milliseconds
