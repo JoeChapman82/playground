@@ -1,6 +1,3 @@
-window.onload = function() {
-    document.getElementById("breakoutMusic").play();
-};
 
 function toggleMusic() {
   var breakoutMusic = document.getElementById('breakoutMusic');
