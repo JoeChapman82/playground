@@ -5,7 +5,7 @@ var PORT = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/playground'));
 
-app.get('/audio/music/sudstep.mp3', function(req, res) {
+app.get('audio/music/sudstep.mp3', function(req, res) {
   res.send('audio/music/sudstep.mp3');
 });
 
