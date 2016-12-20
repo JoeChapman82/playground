@@ -5,17 +5,24 @@
   margin: 0 auto;
   max-width: 100%;
   padding: 0;
-
 }
 
 .breakout-button {
   background-color: #818383;
   font-weight: 800;
-  margin: 10px 20px;
-  padding: 10px 20px;
+  margin: 10px 10px 0 10px;
+  padding: 10px 10px;
 }
 
 .button-container {
-  margin-top: 10px;
+  @include gradient-vertical(#AAA6A2, #818383);
+  margin: 10px auto;
   text-align: center;
+  border: 2px solid #818383;
+  width: 480px;
+  max-width: 100%;
+}
+
+.breakout-text {
+  color: #818383;
 }

@@ -1,10 +1,27 @@
 
 function toggleMusic() {
   var breakoutMusic = document.getElementById('breakoutMusic');
-  if (breakoutMusic.paused)
+  if (breakoutMusic.paused) {
     breakoutMusic.play();
-  else
+    document.getElementById('breakoutMusicButton').innerHTML = "Stop music";
+    document.getElementById('breakoutText').innerHTML = "Music: ASCII Visions by Sudstep";
+}  else {
     breakoutMusic.pause();
+    document.getElementById('breakoutMusicButton').innerHTML = "Play music";
+    document.getElementById('breakoutText').innerHTML = "";
+}
+}
+
+function breakoutPauseResume() {
+  if (breakoutPaused === false) {
+  document.getElementById('breakoutPauseButton').innerHTML = "Resume";
+  clearInterval(drawLoop);
+  breakoutPaused = true;
+} else if (breakoutPaused === true) {
+  document.getElementById('breakoutPauseButton').innerHTML = "Pause";
+  drawLoop = setInterval(draw, 10);
+  breakoutPaused = false;
+}
 }
 
 
@@ -12,13 +29,13 @@ function toggleMusic() {
 var canvas = document.getElementById('breakoutCanvas');
 var ctx = canvas.getContext('2d');
 // Ball
-var x = canvas.width/2; //starting ball position, used in drawball
-var y = canvas.height-30; //starting ball position, used in drawball
+var x = canvas.width / 2; //starting ball position, used in drawball
+var y = canvas.height - 45; //starting ball position, used in drawball
 var ballRadius = 10;
 var dx = 2;  //starting ball direction
 var dy = -2; //starting ball direction
 // Paddle
-var paddleHeight = 10;
+var paddleHeight = 15;
 var paddleWidth = 75;
 var paddleX = (canvas.width - paddleWidth)/2;
 // Controls
@@ -41,6 +58,8 @@ var scorePlusBasic = 20;
 var maxScore = 2500;
 // Lives
 var lives = 3;
+// Pause feature
+var breakoutPaused = false;
 
 
 document.addEventListener('keydown', keyDownHandler, false);
@@ -61,8 +80,13 @@ function keyDownHandler(e) {
     rightPressed = true;
   } else if(e.keyCode == 37) {
     leftPressed = true;
+  } else if(e.keyCode === 80) {
+    breakoutPauseResume();
   }
 }
+
+//  e.which + con.log will log which key was used
+//  console.log('Key pressed was: ' + e.which);
 
 function keyUpHandler(e) {
   if(e.keyCode === 39) {
@@ -92,7 +116,7 @@ function drawBall() {
   ctx.arc(x, y, ballRadius, 0, Math.PI*2);
   ctx.fillStyle = 'grey';
   ctx.fill();
-  ctx.strokeStyle = '5px black';
+  ctx.strokeStyle = '5px #000000';
   ctx.stroke();
   ctx.closePath();
 }
@@ -102,6 +126,8 @@ function drawPaddle() {
   ctx.rect(paddleX, (canvas.height - paddleHeight) - paddleHeight, paddleWidth, paddleHeight);
   ctx.fillStyle = '#818383';
   ctx.fill();
+  ctx.strokeStyle = '5px #000000';
+  ctx.stroke();
   ctx.closePath();
 }
 
@@ -183,7 +209,7 @@ function drawPause() {
 
 function resetLevel() {
   x = canvas.width / 2;
-  y = canvas.height - 30;
+  y = canvas.height - 40;
   dx = 2;
   dy = -2;
   paddleX = (canvas.width - paddleWidth) / 2;
@@ -231,6 +257,25 @@ function drawWinnerMessage() {
   ctx.fillText('Press the restart button to try again', 115, 190);
 }
 
+function restartGame() {
+  clearInterval(drawLoop);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  brickRowCount = 3;
+  bricks = [];
+    for (c = 0; c < brickColumnCount; c++) {
+      bricks[c] = [];
+        for (r = 0; r < brickRowCount; r++) {
+          bricks[c][r] = { x: 0, y: 0, status: 1 };
+        }
+      }
+      score = 0;
+      lives = 3;
+      level = 1;
+      resetLevel();
+      draw();
+      drawPause();
+}
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // clears area within given boundries
   collisionDetection();
@@ -249,10 +294,9 @@ function draw() {
     if (y + dy < ballRadius) {
       dy = -dy;
   // If ball hits bottom edge but not paddle, game over triggered
-}   if ((y + dy > canvas.height - (ballRadius + paddleHeight)) && (x > paddleX && x < paddleX + paddleWidth)) {
+}   if ((y + dy > canvas.height - (ballRadius + paddleHeight + 10)) && (x > paddleX && x < paddleX + paddleWidth)) {
           dy = -dy;
           dx += (Math.random() / 2);
-          console.log(dx);
         } else if (y + dy > canvas.height - ballRadius){
           lives--;
           if(!lives) {

@@ -275,9 +275,20 @@ body.animate-body {
 .breakout-button {
   background-color: #818383;
   font-weight: 800;
-  margin: 10px 20px;
-  padding: 10px 20px; }
+  margin: 10px 10px 0 10px;
+  padding: 10px 10px; }
 
 .button-container {
-  margin-top: 10px;
-  text-align: center; }
+  background-color: #AAA6A2;
+  background: -webkit-linear-gradient(#AAA6A2, #818383);
+  background: -o-linear-gradient(#AAA6A2, #818383);
+  background: -moz-linear-gradient(#AAA6A2, #818383);
+  background: linear-gradient(#AAA6A2, #818383);
+  margin: 10px auto;
+  text-align: center;
+  border: 2px solid #818383;
+  width: 480px;
+  max-width: 100%; }
+
+.breakout-text {
+  color: #818383; }

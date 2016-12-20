@@ -10,10 +10,13 @@
 
 <body>
   <audio id="breakoutMusic" src="/audio/music/sudStep.mp3" loop="loop"></audio>
-  <canvas id="breakoutCanvas" width="480" height="320"></canvas>
+  <canvas id="breakoutCanvas" width="480" height="320">Sorry. Your browser can't display this game.
+  <a href="https://browser-update.org/update.html">Click here</a> for information about updating your browser.</canvas>
   <div class="button-container">
-    <button class="breakout-button" onclick="toggleMusic()">Stop / Play Music</button>
-    <button class="breakout-button" onclick="document.location.reload()">Restart game</button>
+    <button id="breakoutMusicButton" class="breakout-button" onclick="toggleMusic()">Play Music</button>
+    <button id="breakoutPauseButton" class="breakout-button" onclick="breakoutPauseResume()">Pause Game</button>
+    <button class="breakout-button" onclick="restartGame()">Restart game</button>
+    <p id="breakoutText" class="breakout-text"></p>
   </div>
 <script src="../scripts/breakout.js"></script>
 </body>
