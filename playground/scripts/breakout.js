@@ -1,30 +1,4 @@
 
-function toggleMusic() {
-  var breakoutMusic = document.getElementById('breakoutMusic');
-  if (breakoutMusic.paused) {
-    breakoutMusic.play();
-    document.getElementById('breakoutMusicButton').innerHTML = "Stop music";
-    document.getElementById('breakoutText').innerHTML = "Music: ASCII Visions by Sudstep";
-}  else {
-    breakoutMusic.pause();
-    document.getElementById('breakoutMusicButton').innerHTML = "Play music";
-    document.getElementById('breakoutText').innerHTML = "";
-}
-}
-
-function breakoutPauseResume() {
-  if (breakoutPaused === false) {
-  document.getElementById('breakoutPauseButton').innerHTML = "Resume";
-  clearInterval(drawLoop);
-  breakoutPaused = true;
-} else if (breakoutPaused === true) {
-  document.getElementById('breakoutPauseButton').innerHTML = "Pause";
-  drawLoop = setInterval(draw, 10);
-  breakoutPaused = false;
-}
-}
-
-
 // Canvas
 var canvas = document.getElementById('breakoutCanvas');
 var ctx = canvas.getContext('2d');
@@ -60,6 +34,38 @@ var maxScore = 2500;
 var lives = 3;
 // Pause feature
 var breakoutPaused = false;
+// Others
+var drawLoop; // for initialsiing game
+var introLoop; // for initialising Intro
+var gamePlaying = false;
+
+document.onload = breakoutIntroStart();
+
+
+function toggleMusic() {
+  var breakoutMusic = document.getElementById('breakoutMusic');
+  if (breakoutMusic.paused) {
+    breakoutMusic.play();
+    document.getElementById('breakoutMusicButton').innerHTML = "Stop music";
+    document.getElementById('breakoutText').innerHTML = "Music: ASCII Visions by Sudstep";
+}  else {
+    breakoutMusic.pause();
+    document.getElementById('breakoutMusicButton').innerHTML = "Play music";
+    document.getElementById('breakoutText').innerHTML = "";
+}
+}
+
+function breakoutPauseResume() {
+  if (breakoutPaused === false && gamePlaying === true) {
+  document.getElementById('breakoutPauseButton').innerHTML = "Resume";
+  clearInterval(drawLoop);
+  breakoutPaused = true;
+} else if (breakoutPaused === true) {
+  document.getElementById('breakoutPauseButton').innerHTML = "Pause";
+  drawLoop = setInterval(draw, 10);
+  breakoutPaused = false;
+}
+}
 
 
 document.addEventListener('keydown', keyDownHandler, false);
@@ -258,6 +264,11 @@ function drawWinnerMessage() {
 }
 
 function restartGame() {
+  if (gamePlaying === false) {
+    clearInterval(introLoop);
+    document.getElementById('breakoutStartButton').innerHTML = "Restart game";
+    gamePlaying = true;
+  }
   clearInterval(drawLoop);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   brickRowCount = 3;
@@ -304,8 +315,8 @@ function draw() {
             clearInterval(drawLoop);
           } else {
             drawLifeLost();
-            drawPause();
             resetLevel();
+            drawPause();
           }
       }
   // conditionals for moving paddles
@@ -318,4 +329,35 @@ function draw() {
     y += dy;
 }
 
-var drawLoop = setInterval(draw,10); //sets repeat on function draw with interval 10 milliseconds
+function breakoutStartGame() {
+}
+// drawLoop = setInterval(draw,10); //sets repeat on function draw with interval 10 milliseconds
+
+function breakoutIntro() {
+  ctx.beginPath();
+  ctx.rect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#424242';
+  ctx.fill();
+  ctx.closePath();
+  ctx.font = 'bold 48px Arial';
+  ctx.fillStyle = '#C67171';
+  ctx.fillText('BREAKOUT', 100, 160);
+  ctx.font = 'bold 48px Arial';
+  ctx.fillStyle = 'red';
+  ctx.font = '16px Arial';
+  ctx.fillStyle = '#C67171';
+  ctx.fillText('Click start to play!', 175, 190);
+  drawBall();
+  x += dx;
+  y += dy;
+  if(x + dx > canvas.width - ballRadius || x + dx < ballRadius || (y + dy >= 122 && y + dy <= 168 && x + dx >= 100 && x + dx <= 370) || (y + dy >= 173 && y + dy <= 193 && x + dx >= 175 && x + dx <= 320)) {
+    dx = -dx;
+  }
+  if ((y + dy < ballRadius) || (y + dy > canvas.height - ballRadius) || (y + dy >= 120 && y + dy <= 170 && x + dx >= 100 && x + dx <= 350) || (y + dy >= 175 && y + dy <= 195 && x + dx >= 175 && x + dx <= 320)) {
+      dy = -dy;
+}
+}
+
+function breakoutIntroStart() {
+introLoop = setInterval(breakoutIntro, 10);
+}
