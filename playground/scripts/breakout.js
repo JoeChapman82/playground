@@ -81,7 +81,7 @@ function mouseMoveHandler(e) {
 
 function touchMoveHandler(e) {
   var touch = e.touches[0];
-  var relativeX = touch.clientX;
+  var relativeX = touch.clientX - canvas.offsetLeft;
   if(relativeX > 0 + (paddleWidth / 2) && relativeX < canvas.width - (paddleWidth / 2)) {
     paddleX = relativeX - paddleWidth / 2;
   }
@@ -90,8 +90,10 @@ function touchMoveHandler(e) {
 function drawBall() {
   ctx.beginPath();
   ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-  ctx.fillStyle = '#818383';
+  ctx.fillStyle = 'grey';
   ctx.fill();
+  ctx.strokeStyle = '5px black';
+  ctx.stroke();
   ctx.closePath();
 }
 
